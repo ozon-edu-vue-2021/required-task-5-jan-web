@@ -1,0 +1,99 @@
+import Vue from "vue";
+import Vuex from "vuex";
+
+Vue.use(Vuex);
+
+export default new Vuex.Store({
+	state: {
+		products: {},
+		cart: {},
+		resultCart: [],
+    checkedProducts: []
+	},
+	mutations: {
+		modifyData: (state, usfulData) => {
+			usfulData.forEach((product) => {
+				product.price = Math.floor(Math.random() * 100);
+				product.img = Math.ceil(Math.random() * 12);
+				product.amount = 0;
+			});
+			state.products = usfulData;
+		},
+		addProductToCart: (state, id) => {
+			if (state.cart[id]) {
+				state.cart[id]++;
+			} else {
+				state.cart[id] = 1;
+			}
+		},
+		setCartProducts(state) {
+			state.resultCart = [];
+			for (const key in state.products) {
+				const product = state.products[key];
+				if (state.cart[product.id]) {
+					product.amount = state.cart[product.id];
+					state.resultCart.push(product);
+				}
+			}
+		},
+    deliteProduct(state, id) {
+      const tempArr = state.resultCart;
+      state.resultCart = [];
+      tempArr.forEach(product => {
+        if(product.id !== id) {
+          state.resultCart.push(product);
+        }
+      })
+    },
+    checkedProduct(state, id) {
+      state.checkedProducts.push(id);
+      console.log('state.checkedProducts: ', state.checkedProducts);
+    },
+    deleteSelected(state) {
+      const tempArr = state.resultCart;
+      state.resultCart = [];
+      const uncheckedArr = [];
+
+      tempArr.forEach(product => {
+          let result = true;
+        for (let i=0; i < state.checkedProducts.length; i++) {
+          if(product.id === state.checkedProducts[i]){
+            result = false;
+          }
+          if(result) {
+            uncheckedArr.push(product);
+          }
+        }
+      })
+
+      state.resultCart = uncheckedArr;
+      state.checkedProducts = [];
+    }
+	},
+	getters: {
+		getCartProducts(state) {
+			return state.resultCart;
+		},
+    getTotalAmount(state) {
+      const totalAmount = state.resultCart.reduce((acc, product) => {
+        return acc + product.amount;
+      }, 0);
+      return totalAmount;
+    },
+    getTotalPrice(state) {
+      const totalPrice = state.resultCart.reduce((acc, product) => {
+        return acc + (product.amount * product.price);
+      }, 0);
+      return totalPrice;
+    },
+	},
+	actions: {
+		getDataFromApi: async function (context) {
+			const res = await fetch(
+				"https://random-data-api.com/api/food/random_food?size=30"
+			);
+			const usfulData = await res.json();
+			context.commit("modifyData", usfulData);
+		},
+	},
+});
