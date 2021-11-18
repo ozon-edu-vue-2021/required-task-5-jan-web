@@ -11,11 +11,9 @@
 		<div class="card__main">
 			<div class="card__productTitle">{{ product.dish }}</div>
 			<div class="card__productDescr">{{ product.description }}</div>
-			<div class="card__productDelite" @click="deliteProduct">Удалить</div>
+			<div class="card__productDelete" @click="deleteProduct">Удалить</div>
 		</div>
-
 		<div class="card__productPrice">{{ product.price }} ₽</div>
-
 		<div class="card__amountSelector">
 			<select
 				type="select"
@@ -52,14 +50,15 @@ export default {
 		selected: "toggleChecked",
 	},
 	methods: {
-		deliteProduct() {
-			this.$store.commit("deliteProduct", this.product.id);
+		deleteProduct() {
+			this.$store.commit("deleteProduct", this.product.id);
 		},
 		onCheckboxClick() {
 			this.$store.commit("checkedProduct", this.product.id);
+      this.$emit("checkAllBoxesCheckers")
 		},
 		toggleChecked() {
-			this.checked = !this.checked;
+			this.checked = this.selected;
 		},
 	},
 	computed: {
@@ -78,11 +77,13 @@ export default {
 	margin: 10px 20px;
 	border-bottom: 1px solid rgba(0, 26, 52, 0.16);
 }
+
 .card__img {
 	width: 92px;
 	margin-left: 10px;
 	margin-right: 10px;
 }
+
 .card__main {
 	display: flex;
 	flex-direction: column;
@@ -92,18 +93,22 @@ export default {
 	padding: 10px;
 	padding-top: 0;
 }
+
 .card__productTitle {
 	font-weight: 700;
 }
+
 .card__productDescr {
 	margin-top: 0;
 	margin-bottom: auto;
 }
-.card__productDelite {
+
+.card__productDelete {
 	color: #005bff;
 	cursor: pointer;
 	font-size: 14px;
 }
+
 .card__select {
 	background-color: #fff;
 	border: 2px solid #b3bcc5;
@@ -123,17 +128,21 @@ export default {
 	background-position: right 0.7em top 50%, 0 0;
 	background-size: 0.65em auto, 100%;
 }
+
 .card__select:hover {
 	border-color: #005bff;
 }
+
 .card__select:focus {
 	border-color: #005bff;
 	outline: none;
 }
+
 .card__productPrice {
 	margin-top: 0;
 	margin-bottom: auto;
 }
+
 .card__amountSelector {
 	margin: 0px 0px auto auto;
 }

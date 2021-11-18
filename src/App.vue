@@ -34,7 +34,7 @@ export default {
   },
   data() {
     return {
-      isShopWindowHidden: false,
+      isShopWindowHidden: true,
     }
   },
   methods: {
@@ -62,20 +62,27 @@ export default {
     background-color: #005bff;
     color: #fff;
 }
+
+.button:hover {
+  cursor: pointer;
+}
+
 .main-wrapper {
   margin: 0 3%;
   display: flex;
-  /* background-color: #fafafa; */
 }
+
 .main-leftside {
  background-color: #fff;
- width: 1000px;
+ width: 1040px;
+ padding: 5px 20px;
+ margin-top: 20px;
 }
+
 .main-sidebar {
   width: 100%;
   height: fit-content;
   margin: 55px 20px 20px 20px;
-  /* padding-top: 45px; */
   background-color: #fff;
 }
 </style>
@@ -87,12 +94,6 @@ export default {
   background-color: #fafafa;
   padding: 24px;
   box-sizing: border-box;
-}
-
-html,
-body,
-#app {
-  height: 100%;
 }
 
 * {

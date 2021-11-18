@@ -12,24 +12,19 @@
       <h2>Общая стоимость</h2>
       <div>{{ getTotalPrice }} ₽</div>
     </div>
-
   </div>
 </div>
-
 </template>
 
 <script>
 
 export default {
-
   methods: {
-
       alertList() {
       const totalAmount = this.$store.getters.getCartProducts.reduce((acc, product) => {
         acc.push(' \n' + product.dish + ' ' + product.amount + ' шт');
         return acc;
       }, []);
-      console.log('totalAmount: ', totalAmount);
       alert(totalAmount);
     },
   },
@@ -61,11 +56,17 @@ export default {
     text-align: center;
     margin-bottom: 10px;
 }
+
+.button:hover {
+  cursor: pointer
+}
+
 .sidebar__delivery {
   color: #808d9a;
   font-size: 14px;
   line-height: 18px;
 }
+
 .sidebar__cart-wrapper {
   display: flex;
   justify-content: space-between;

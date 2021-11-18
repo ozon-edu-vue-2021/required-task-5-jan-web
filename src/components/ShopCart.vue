@@ -2,7 +2,12 @@
 	<div class="cart_wrapper">
 		<h2>Корзина магазина</h2>
 		<div class="cart__selectors">
-			<input type="checkbox" id="selectAll" @click="toggleSelectAll" />
+			<input
+        type="checkbox"
+        id="selectAll"
+        v-model="allBoxesChecked"
+        @click="toggleSelectAll"
+      />
 			<label for="selectAll">Выбрать всё</label>
 			<span class="cart__deleteSlected" @click="deleteSelected">
 				Удалить выбранные
@@ -14,9 +19,10 @@
 		</div>
 		<div v-for="product in products">
 			<card-cart
-				:product="product"
-				:key="product.id"
-				:selected="allBoxiesChecked"
+        :product="product"
+        :key="product.id"
+        :selected="allBoxesChecked"
+        @checkAllBoxesCheckers="checkAllBoxesCheckers"
 			/>
 		</div>
 	</div>
@@ -31,7 +37,7 @@ export default {
 	},
 	data() {
 		return {
-			allBoxiesChecked: false,
+			allBoxesChecked: false,
 		};
 	},
 	methods: {
@@ -39,8 +45,15 @@ export default {
 			this.$store.commit("deleteSelected");
 		},
 		toggleSelectAll() {
-			this.allBoxiesChecked = !this.allBoxiesChecked;
+			this.allBoxesChecked = !this.allBoxesChecked;
 		},
+    checkAllBoxesCheckers() {
+      if(this.$store.getters.isAllProductsChecked){
+        this.allBoxesChecked = true;
+      } else {
+        this.allBoxesChecked = false;
+      }
+    }
 	},
 	computed: {
 		products() {
@@ -55,10 +68,12 @@ export default {
 	padding: 20px;
 	border-bottom: 1px solid rgba(0, 26, 52, 0.16);
 }
+
 .cart__deleteSlected {
 	color: #f91155;
 	margin-left: 24px;
 }
+
 .cart__header {
 	display: flex;
 	justify-content: space-between;

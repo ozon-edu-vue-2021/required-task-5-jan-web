@@ -11,13 +11,13 @@ export default new Vuex.Store({
 		checkedProducts: [],
 	},
 	mutations: {
-		modifyData: (state, usfulData) => {
-			usfulData.forEach((product) => {
+		modifyData: (state, usefulData) => {
+			usefulData.forEach((product) => {
 				product.price = Math.floor(Math.random() * 100);
 				product.img = Math.ceil(Math.random() * 12);
 				product.amount = 0;
 			});
-			state.products = usfulData;
+			state.products = usefulData;
 		},
 		addProductToCart: (state, id) => {
 			if (state.cart[id]) {
@@ -76,14 +76,17 @@ export default new Vuex.Store({
 			}, 0);
 			return totalPrice;
 		},
+		isAllProductsChecked(state) {
+			return state.resultCart.length === state.checkedProducts.length
+		},
 	},
 	actions: {
 		getDataFromApi: async function (context) {
 			const res = await fetch(
 				"https://random-data-api.com/api/food/random_food?size=30"
 			);
-			const usfulData = await res.json();
-			context.commit("modifyData", usfulData);
+			const usefulData = await res.json();
+			context.commit("modifyData", usefulData);
 		},
 	},
 });
