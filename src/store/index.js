@@ -8,7 +8,7 @@ export default new Vuex.Store({
 		products: {},
 		cart: {},
 		resultCart: [],
-    checkedProducts: []
+		checkedProducts: [],
 	},
 	mutations: {
 		modifyData: (state, usfulData) => {
@@ -36,56 +36,46 @@ export default new Vuex.Store({
 				}
 			}
 		},
-    deliteProduct(state, id) {
-      const tempArr = state.resultCart;
-      state.resultCart = [];
-      tempArr.forEach(product => {
-        if(product.id !== id) {
-          state.resultCart.push(product);
-        }
-      })
-    },
-    checkedProduct(state, id) {
-      state.checkedProducts.push(id);
-      console.log('state.checkedProducts: ', state.checkedProducts);
-    },
-    deleteSelected(state) {
-      const tempArr = state.resultCart;
-      state.resultCart = [];
-      const uncheckedArr = [];
-
-      tempArr.forEach(product => {
-          let result = true;
-        for (let i=0; i < state.checkedProducts.length; i++) {
-          if(product.id === state.checkedProducts[i]){
-            result = false;
-          }
-          if(result) {
-            uncheckedArr.push(product);
-          }
-        }
-      })
-
-      state.resultCart = uncheckedArr;
-      state.checkedProducts = [];
-    }
+		deliteProduct(state, id) {
+			const tempArr = state.resultCart;
+			state.resultCart = [];
+			tempArr.forEach((product) => {
+				if (product.id !== id) {
+					state.resultCart.push(product);
+				}
+			});
+		},
+		checkedProduct(state, id) {
+			state.checkedProducts.push(id);
+		},
+		deleteSelected(state) {
+			const tempArr = state.resultCart;
+			for (let i = 0; i < state.checkedProducts.length; i++) {
+				const idxCheckedProduct = tempArr.findIndex(
+					(product) => product.id === state.checkedProducts[i]
+				);
+				tempArr.splice(idxCheckedProduct, 1);
+			}
+			state.resultCart = tempArr;
+			state.checkedProducts = [];
+		},
 	},
 	getters: {
 		getCartProducts(state) {
 			return state.resultCart;
 		},
-    getTotalAmount(state) {
-      const totalAmount = state.resultCart.reduce((acc, product) => {
-        return acc + product.amount;
-      }, 0);
-      return totalAmount;
-    },
-    getTotalPrice(state) {
-      const totalPrice = state.resultCart.reduce((acc, product) => {
-        return acc + (product.amount * product.price);
-      }, 0);
-      return totalPrice;
-    },
+		getTotalAmount(state) {
+			const totalAmount = state.resultCart.reduce((acc, product) => {
+				return acc + product.amount;
+			}, 0);
+			return totalAmount;
+		},
+		getTotalPrice(state) {
+			const totalPrice = state.resultCart.reduce((acc, product) => {
+				return acc + product.amount * product.price;
+			}, 0);
+			return totalPrice;
+		},
 	},
 	actions: {
 		getDataFromApi: async function (context) {
