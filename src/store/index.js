@@ -36,7 +36,7 @@ export default new Vuex.Store({
 				}
 			}
 		},
-		deliteProduct(state, id) {
+		deleteProduct(state, id) {
 			const tempArr = state.resultCart;
 			state.resultCart = [];
 			tempArr.forEach((product) => {
