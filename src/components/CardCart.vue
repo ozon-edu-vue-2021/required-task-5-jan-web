@@ -53,8 +53,12 @@ export default {
 		deleteProduct() {
 			this.$store.commit("deleteProduct", this.product.id);
 		},
-		onCheckboxClick() {
+		onCheckboxClick(e) {
+		if(e.target.checked){
 			this.$store.commit("checkedProduct", this.product.id);
+		} else {
+			this.$store.commit("unCheckedProduct", this.product.id);
+		}
       this.$emit("checkAllBoxesCheckers")
 		},
 		toggleChecked() {

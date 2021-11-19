@@ -48,6 +48,10 @@ export default new Vuex.Store({
 		checkedProduct(state, id) {
 			state.checkedProducts.push(id);
 		},
+		unCheckedProduct(state, id) {
+			const idx = state.checkedProducts.findIndex(item => item===id);
+			state.checkedProducts.splice(idx, 1);
+		},
 		deleteSelected(state) {
 			const tempArr = state.resultCart;
 			for (let i = 0; i < state.checkedProducts.length; i++) {
@@ -59,6 +63,15 @@ export default new Vuex.Store({
 			state.resultCart = tempArr;
 			state.checkedProducts = [];
 		},
+		toggleSelectedProducts(state) {
+			const newArrcheckedProducts = [];
+			if(!state.checkedProducts.length) {
+				state.resultCart.forEach(product => newArrcheckedProducts.push(product.id))
+				}
+				state.checkedProducts = newArrcheckedProducts;
+			}
+
+
 	},
 	getters: {
 		getCartProducts(state) {
